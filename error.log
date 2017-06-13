@@ -1,0 +1,12 @@
+java.io.FileNotFoundException: assets\data\arial.fnt (The system cannot find the file specified)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(Unknown Source)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at warpedrealities.core.font.GlyphLoader.buildMap(GlyphLoader.java:29)
+	at warpedrealities.core.font.FontSupport.<init>(FontSupport.java:51)
+	at warpedrealities.core.font.FontSupport.getInstance(FontSupport.java:41)
+	at vmo.Game.<init>(Game.java:160)
+	at vmo.Main.main(Main.java:9)
+system debug primary shader program id is 3
+system debug shadow shader program id is 6
