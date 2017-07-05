@@ -3,7 +3,7 @@ package warpedrealities.bloodgun.actors.shotHandler;
 import java.util.List;
 
 import warpedrealities.bloodgun.actors.Actor;
-import warpedrealities.bloodgun.actors.shotHandler.World;
+import warpedrealities.bloodgun.scenes.World;
 import warpedrealities.core.rendering.SpriteManager;
 import warpedrealities.core.shared.Vec2f;
 

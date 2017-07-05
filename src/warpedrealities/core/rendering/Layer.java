@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL30;
 import warpedrealities.core.core.Tile_Int;
 import warpedrealities.core.shared.Vertex;
 
-public class Layer {
+public class Layer  {
 	int VBO, VAO, VIO, indiceCount;
 
 	boolean draw;
@@ -35,7 +35,7 @@ public class Layer {
 		return indiceCount / 6;
 	}
 
-	public void Discard() {
+	public void discard() {
 		draw = false;
 
 		if (VAO != -1) {
@@ -59,7 +59,7 @@ public class Layer {
 	public void Generate(Tile_Int[][] tiles, boolean background) {
 
 		// discard elements if they already exist
-		Discard();
+		discard();
 
 		draw = true;
 		// build new elements based on a specific level

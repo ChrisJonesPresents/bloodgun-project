@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 
+import warpedrealities.bloodgun.blood.ParticleRenderer;
 import warpedrealities.bloodgun.level.Level;
 import warpedrealities.core.core.Game;
 import warpedrealities.core.rendering.Sprite;
@@ -21,7 +22,8 @@ public class Platformer_Renderer {
 	private FloatBuffer floatBuffer;
 	protected Matrix4f viewmatrix;
 	private Vec2f cameraPosition;
-
+	private ParticleRenderer particleRenderer;
+	
 	public Platformer_Renderer() {
 		cameraPosition = new Vec2f(1, 1);
 		spriteManager = new SpriteManager();
@@ -35,6 +37,10 @@ public class Platformer_Renderer {
 		viewmatrix.m32 = 0;
 		floatBuffer = BufferUtils.createFloatBuffer(16);
 		levelRenderer = new Level_Renderer();
+	}
+
+	public void setParticleRenderer(ParticleRenderer particleRenderer) {
+		this.particleRenderer = particleRenderer;
 	}
 
 	public void centerCamera(float x, float y, Level level) {
@@ -70,7 +76,9 @@ public class Platformer_Renderer {
 		levelRenderer.drawBackground(cameraPosition.x, cameraPosition.y, objMatrix, tintVar, floatBuffer);
 		levelRenderer.drawForeground(objMatrix, tintVar, floatBuffer);
 		// levelRenderer.drawCollision(objMatrix, tintVar, floatBuffer);
+		particleRenderer.draw(objMatrix, tintVar, floatBuffer);	
 		spriteManager.draw(objMatrix, tintVar, floatBuffer);
+
 	}
 
 	public void discard() {

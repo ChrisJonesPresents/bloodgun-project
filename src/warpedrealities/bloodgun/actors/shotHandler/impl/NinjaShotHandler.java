@@ -6,9 +6,9 @@ import warpedrealities.bloodgun.actors.Actor;
 import warpedrealities.bloodgun.actors.impl.Corpse;
 import warpedrealities.bloodgun.actors.impl.Ninja_NPC;
 import warpedrealities.bloodgun.actors.shotHandler.ShotHandler;
-import warpedrealities.bloodgun.actors.shotHandler.World;
 import warpedrealities.bloodgun.director.Director;
 import warpedrealities.bloodgun.director.Director_Int;
+import warpedrealities.bloodgun.scenes.World;
 import warpedrealities.core.core.GameManager;
 import warpedrealities.core.rendering.SpriteManager;
 import warpedrealities.core.rendering.Sprite_Rotatable;
@@ -44,8 +44,9 @@ public class NinjaShotHandler implements ShotHandler {
 			sprite[i].setImage(16+(8*i)+r);
 			manager.addSprite(sprite[i], "ninja.png");
 		}
-		
-		Actor actor=new Corpse(ninja.getCollisionHandler(),ninja.getPosition(),origin,sprite);
+		Vec2f v=new Vec2f(ninja.getPosition().x-position.x,ninja.getPosition().y-position.y); v.setLength(4);
+		world.getParticleManager().addBurst("directional",ninja.getPosition(), v);
+		Actor actor=new Corpse(world,ninja.getCollisionHandler(),ninja.getPosition(),origin,sprite);
 		
 		world.getActors().add(actor);
 	}

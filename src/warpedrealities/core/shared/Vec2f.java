@@ -65,6 +65,20 @@ public class Vec2f {
 		return (float) Math.sqrt(xe + ye);
 	}
 
+	public void modLength(float l) {
+		float length = length();
+		float ratio = (length+l)/length;
+		x = x * ratio;
+		y = y * ratio;		
+		
+	}	
+	public void setLength(float l) {
+		float length = length();
+		float ratio = l / length;
+		x = x * ratio;
+		y = y * ratio;		
+	}	
+	
 	public void normalize() {
 		float length = length();
 		float ratio = 1 / length;
@@ -83,6 +97,29 @@ public class Vec2f {
 		double y = (-this.x * Math.sin(angle)) + (this.y * Math.cos(angle));
 
 		return new Vec2f(x, y);
+	}
+	public void rotate(float r) {
+		double x0 = (x * Math.cos(r)) + (y * Math.sin(r));
+		double y0 = (x * -Math.sin(r)) + (y * Math.cos(r));
+		x = (float) x0;
+		y = (float) y0;
+	}
+
+	public Vec2f add(Vec2f a) {
+		x+=a.x;
+		y+=a.y;
+		return this;
+	}
+
+	public Vec2f replicate() 
+	{
+		return new Vec2f(x,y);
+	}
+
+	public Vec2f subtract(Vec2f p) {
+		x-=p.x;
+		y-=p.y;
+		return this;
 	}
 
 }

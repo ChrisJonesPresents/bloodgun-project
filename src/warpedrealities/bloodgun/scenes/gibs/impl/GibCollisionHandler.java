@@ -14,14 +14,15 @@ public class GibCollisionHandler {
 		this.collisionHandler=collisionHandler;
 	}
 	
-	public void checkGib(Gib gib)
+	public boolean checkGib(Gib gib)
 	{
 		Tile.Collision collision=collisionHandler.getWorldCollision(gib.getPosition().x, gib.getPosition().y);
 		if (collision!=Collision.EMPTY)
 		{
 			gib.setVelocity(new Vec2f(0,0));
-			
+			return true;
 		}
+		return false;
 	}
 	
 

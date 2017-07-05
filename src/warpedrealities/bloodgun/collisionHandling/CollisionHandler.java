@@ -8,5 +8,6 @@ public interface CollisionHandler {
 	public Tile.Collision getWorldCollision(float x, float y);
 
 	public ComplexCollision getLineIntersect(float xStart, float yStart, float xEnd, float yEnd, boolean ignoreThin);
+	public ComplexCollision getWorldLineIntersect(float xStart, float yStart, float xEnd, float yEnd, boolean ignoreThin);
 
 }

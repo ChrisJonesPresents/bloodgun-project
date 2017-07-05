@@ -1,5 +1,7 @@
 package warpedrealities.bloodgun.scenes.gibs;
 
+import warpedrealities.bloodgun.blood.ParticleEmitter;
+import warpedrealities.bloodgun.blood.ParticleManager;
 import warpedrealities.bloodgun.collisionHandling.CollisionHandler;
 import warpedrealities.core.core.GameManager;
 import warpedrealities.core.rendering.Sprite;
@@ -15,14 +17,17 @@ public class Gib {
 	private Vec2f velocity;
 	private boolean active;
 	private float clock;
-
+	private ParticleEmitter emitter;
 	
-	public Gib()
+	public Gib(ParticleManager particleManager)
 	{
+		position=new Vec2f(0,0);
 		active=false;
 		clock=0;
 		sprite=new Sprite_Rotatable(new Vec2f(0, 0), 0.5F, 16);
-
+		emitter=new ParticleEmitter(position);
+		particleManager.addEmitter(emitter);
+		
 	}
 	
 	public Sprite getSprite() {
@@ -47,7 +52,8 @@ public class Gib {
 
 	public void setPosition(Vec2f position) {
 
-		this.position=new Vec2f(position.x,position.y);
+		this.position.x=position.x;
+		this.position.y=position.y;
 		sprite.reposition(this.position.x,this.position.y);
 	}
 
@@ -108,6 +114,7 @@ public class Gib {
 		sprite.reposition(position.x,position.y);
 		if (velocity.x!=0)
 		{
+			emitter.generate(dt);
 			sprite.setRotation(sprite.getRotation()+(dt*4));
 			if (velocity.y>-TERMINALVELOCITY)
 			{
@@ -115,11 +122,9 @@ public class Gib {
 			}
 			position.x+=dt*velocity.x;
 			position.y+=dt*velocity.y;
-
-
 		}
 		
-
+		emitter.update(dt);
 		if (clock>60)
 		{
 			active=false;

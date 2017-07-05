@@ -16,7 +16,7 @@ import warpedrealities.core.shared.Vec2f;
 import warpedrealities.core.shared.Vec2i;
 import warpedrealities.core.shared.Vertex;
 
-public class Sprite implements Square_Int {
+public class Sprite implements Square_Int, Renderable {
 
 	protected int VBO;
 	protected int VAO;

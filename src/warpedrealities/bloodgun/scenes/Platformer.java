@@ -6,7 +6,8 @@ import org.lwjgl.glfw.GLFW;
 
 import warpedrealities.bloodgun.actors.Actor;
 import warpedrealities.bloodgun.actors.impl.Player;
-import warpedrealities.bloodgun.actors.shotHandler.impl.World_Impl;
+import warpedrealities.bloodgun.blood.ParticleEmitter;
+import warpedrealities.bloodgun.blood.ParticleManager;
 import warpedrealities.bloodgun.actors.impl.Humanoid.AnimationState;
 import warpedrealities.bloodgun.collisionHandling.CollisionHandler;
 import warpedrealities.bloodgun.collisionHandling.CollisionHandler_Impl;
@@ -17,6 +18,7 @@ import warpedrealities.bloodgun.scenes.gibs.GibHandler;
 import warpedrealities.bloodgun.scenes.gibs.impl.GibHandler_Impl;
 import warpedrealities.bloodgun.scenes.gunHandler.BulletHandler;
 import warpedrealities.bloodgun.scenes.gunHandler.GunHandler;
+import warpedrealities.core.core.GameManager;
 import warpedrealities.core.input.Keyboard;
 import warpedrealities.core.input.MouseHook;
 import warpedrealities.core.rendering.Sprite;
@@ -36,9 +38,13 @@ public class Platformer extends SceneBase {
 	private GunHandler gunHandler;
 	private Sprite reticle;
 	private GibHandler gibHandler;
-	
+	private ParticleManager particleManager;
+	private World worldInt;
+	private int counter;
 	public Platformer() {
 		renderer = new Platformer_Renderer();
+		particleManager=new ParticleManager();
+		renderer.setParticleRenderer(particleManager.getRenderer());
 		mouseHandler = new Platformer_MouseHandler();
 		actors = new ArrayList<Actor>();
 		newGame();
@@ -50,8 +56,8 @@ public class Platformer extends SceneBase {
 
 		level = new Level();
 		collisionHandler = new CollisionHandler_Impl(level, actors);
-
-		gibHandler=new GibHandler_Impl(renderer,collisionHandler);
+		particleManager.setCollisionHandler(collisionHandler);
+		gibHandler=new GibHandler_Impl(renderer,collisionHandler,particleManager);
 		Sprite sprite = new Sprite(new Vec2f(-2, -2), 1.0F, 16);
 		renderer.addSprite(sprite, "bloodgun.png");
 		Sprite_Rotatable arm = new Sprite_Rotatable(new Vec2f(0, 0), 1.0F, 4);
@@ -63,14 +69,16 @@ public class Platformer extends SceneBase {
 		reticle = new Sprite(new Vec2f(4, 4), 1.0F, 1);
 		reticle.setVisible(true);
 		renderer.addSprite(reticle, "reticle.png");
-		gunHandler = new GunHandler(collisionHandler, new BulletHandler(renderer), renderer.getSpriteManager(),new World_Impl(actors,gibHandler));
+		worldInt=new World_Impl(actors,gibHandler,particleManager);
+		gunHandler = new GunHandler(collisionHandler, new BulletHandler(renderer), renderer.getSpriteManager(),worldInt);
+
 	}
 
 	@Override
 	public void update(float dt) {
 
 		director.update(dt);
-
+	
 		for (int i = 0; i < actors.size(); i++) {
 			if (Math.abs(actors.get(i).getPosition().x-player.getPosition().x)>16 
 					&& actors.get(i).removalNeeded())
@@ -96,11 +104,18 @@ public class Platformer extends SceneBase {
 		}
 		else
 		{
+			if (counter<3 && player.getAnimationState()==AnimationState.DYING)
+			{
+				Vec2f p=new Vec2f(player.getPosition().x,player.getPosition().y-0.5F);
+				particleManager.addBurst("directional",p, new Vec2f(0,2));
+				particleManager.addBurst("omni",p,new Vec2f(0,2));
+				counter++;
+			}
 			gunHandler.removeBullets();
 		}
 
 		gibHandler.update(dt);
-
+		particleManager.update(dt);
 	}
 
 	@Override
@@ -118,8 +133,8 @@ public class Platformer extends SceneBase {
 
 	@Override
 	public void end() {
-		// TODO Auto-generated method stub
 		renderer.discard();
+		particleManager.getRenderer().discard();
 	}
 
 }

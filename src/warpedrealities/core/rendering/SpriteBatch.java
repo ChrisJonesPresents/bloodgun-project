@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL13;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import warpedrealities.core.shared.Tools;
 
-public class SpriteBatch implements SpriteBatch_Int {
+public class SpriteBatch implements SpriteBatch_Int, Renderable {
 
 	private String spriteTexture;
 	private int textureID;

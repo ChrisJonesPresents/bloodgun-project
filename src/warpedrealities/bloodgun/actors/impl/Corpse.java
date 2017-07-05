@@ -10,7 +10,9 @@ import warpedrealities.bloodgun.actors.impl.Humanoid.AnimationState;
 import warpedrealities.bloodgun.actors.movement.CorpseMovement;
 import warpedrealities.bloodgun.actors.shotHandler.ShotHandler;
 import warpedrealities.bloodgun.actors.shotHandler.impl.CorpseShotHandler;
+import warpedrealities.bloodgun.blood.ParticleManager;
 import warpedrealities.bloodgun.collisionHandling.CollisionHandler;
+import warpedrealities.bloodgun.scenes.World;
 import warpedrealities.core.rendering.Sprite;
 import warpedrealities.core.rendering.SpriteManager;
 import warpedrealities.core.rendering.Square_Int;
@@ -20,6 +22,7 @@ import warpedrealities.core.shared.Vec2f;
 public class Corpse implements Actor, NPC {
 
 	private Vec2f position;
+	private World world;
 	private CollisionHandler collisionHandler;
 	private boolean active;
 	private ShotHandler shotHandler;
@@ -28,8 +31,11 @@ public class Corpse implements Actor, NPC {
 	private CorpseMovement movement;
 	protected AnimationState animationState;
 	private ActorCollision actorCollision;
+	private ParticleManager manager;
 	
-	public Corpse(CollisionHandler collisionHandler, Vec2f position, Vec2f impact, Square_Rotatable_Int[] sprites) {
+	public Corpse(World world,CollisionHandler collisionHandler, Vec2f position, Vec2f impact, Square_Rotatable_Int[] sprites) {
+		this.world=world;
+		this.manager=world.getParticleManager();
 		this.collisionHandler=collisionHandler;
 		this.shotHandler=new CorpseShotHandler(this);
 		this.position=position;
@@ -45,6 +51,7 @@ public class Corpse implements Actor, NPC {
 
 			}		
 		}
+		active=true;
 	}
 
 	@Override
@@ -64,6 +71,11 @@ public class Corpse implements Actor, NPC {
 		for (int i=0;i<sprites.length;i++)
 		{
 			sprites[i].reposition(position.x, position.y);
+		}
+		if (active && !movement.isFalling())
+		{
+			world.getParticleManager().addBurst("omni", position, new Vec2f(0,8));
+			active=false;
 		}
 	}
 

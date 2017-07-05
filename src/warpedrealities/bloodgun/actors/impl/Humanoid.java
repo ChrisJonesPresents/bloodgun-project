@@ -11,7 +11,7 @@ import warpedrealities.core.shared.Vec2f;
 public abstract class Humanoid implements Actor {
 
 	public enum AnimationState {
-		NONE, ATTACKING, DYING
+		NONE, ATTACKING, DYING,DEAD
 	};
 
 	protected Vec2f position;

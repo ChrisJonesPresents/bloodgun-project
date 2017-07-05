@@ -69,7 +69,7 @@ public class Chunk_Renderer {
 	public void discard() {
 
 		for (int i = 0; i < 2; i++) {
-			layers[i].Discard();
+			layers[i].discard();
 		}
 		// collisionRender.discard();
 	}

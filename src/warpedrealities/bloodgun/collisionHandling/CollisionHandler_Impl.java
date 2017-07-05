@@ -84,6 +84,24 @@ public class CollisionHandler_Impl implements CollisionHandler {
 		}
 		return collision;
 	}
+	
+	public ComplexCollision getWorldLineIntersect(float xStart, float yStart, float xEnd, float yEnd, boolean ignoreThin)
+	{
+		BoundBox box = new BoundBox(xStart, yStart, xEnd, yEnd);
+		// process
+		// figure out which chunks we need to check using the xstart and xend
+		// values
+		ChunkGraph graph[] = getGraphs(xStart, xEnd);
+		// calculate all possible collisions, then pick the closest to the
+		// origin
+		ComplexCollision collision = null;
+		for (int i = 0; i < 2; i++) {
+			if (graph[i] != null && collision == null) {
+				collision = graph[i].checkCollision(xStart, yStart, xEnd, yEnd, ignoreThin, box);
+			}
+		}
+		return collision;
+	}
 
 	private ChunkGraph[] getGraphs(float xStart, float xEnd) {
 		ChunkGraph[] graphs = new ChunkGraph[2];

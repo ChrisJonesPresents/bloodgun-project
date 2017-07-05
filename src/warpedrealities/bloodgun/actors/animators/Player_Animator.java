@@ -68,7 +68,7 @@ public class Player_Animator implements Animator {
 			clock -= dt * 8;
 			setFrame((int) (12 + (clock * -1)));
 		}
-
+		
 	}
 
 	@Override
